@@ -82,7 +82,8 @@ cJSON* readJSON(char* fileName) {
     strcat_s(fileName, 10, ".json");
     FILE* fp = fopen(fileName, "r");
     if (fp == NULL) {
-        printf("Error: Unable to open the file.\n");
+        printf("Ошибка! Такого файла не существует.\n");
+        return;
     }
 
     // read the file contents into a string 
@@ -95,7 +96,7 @@ cJSON* readJSON(char* fileName) {
     if (json == NULL) {
         const char* error_ptr = cJSON_GetErrorPtr();
         if (error_ptr != NULL) {
-            printf("Error: %s\n", error_ptr);
+            printf("Ошибка: %s\n", error_ptr);
         }
         cJSON_Delete(json);
         return NULL;
