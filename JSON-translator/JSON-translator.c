@@ -82,7 +82,7 @@ cJSON* readJSON(char* fileName) {
     FILE* fp = fopen(fileName, "r");
     if (fp == NULL) {
         printf("Ошибка! Такого файла не существует.\n");
-        return;
+        return NULL;
     }
 
     // read the file contents into a string 
@@ -111,7 +111,7 @@ int saveJSON(cJSON* dict, char * fileName) {
     // write the JSON string to a file 
     FILE* fp = fopen(fileName, "w");
     if (fp == NULL) {
-        printf("Error: Unable to open the file.\n");
+        printf("Ошибка! Не получилось открыть файл.\n");
         return 0;
     }
     fputs(json_str, fp);
@@ -169,8 +169,9 @@ int main() {
                 if (scanf_s("%s", nameFile, 5)) {
                     strcpy_s(bufferWord, 5, nameFile);
                     dict = readJSON(nameFile);
-                    if (dict == NULL)
-                        printf("Ошибка парсинга!\n");
+                    if (dict == NULL) {
+                        strcpy_s(nameFile, 1, "");
+                    }
                     strcpy_s(nameFile, 5, bufferWord);
                 }
                 else {
