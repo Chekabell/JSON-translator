@@ -81,7 +81,7 @@ cJSON* readJSON(char* fileName) {
     strcat_s(fileName, 10, ".json");
     FILE* fp = fopen(fileName, "r");
     if (fp == NULL) {
-        printf("Ошибка! Такого файла не существует.\n");
+        printf("Ошибка! Такого файла не существует.\n\n");
         return NULL;
     }
 
@@ -135,7 +135,7 @@ int main() {
     system("chcp 1251 > nul");
 
     cJSON* dict = NULL;
-    int key = 0;
+    int key;
     char nameFile[10] = "";
     char bufferWord[20];
     char bufferTranslatedWord[20];
@@ -147,6 +147,7 @@ int main() {
             "\n4 - Найти слово;\n5 - Показать весь словарь;"
             "\n6 - Сохранить и отключить словарь;\n7 - Выйти из приложения\n");
         printf("Выберите вариант: ");
+
         while (scanf_s("%i", &key) < 1 && key >= 1 && key <= 7) {
             printf("Ошибка! Введите существующий вариант: ");
             while ((getchar()) != '\n');
@@ -169,10 +170,10 @@ int main() {
                 if (scanf_s("%s", nameFile, 5)) {
                     strcpy_s(bufferWord, 5, nameFile);
                     dict = readJSON(nameFile);
-                    if (dict == NULL) {
+                    if (dict == NULL) 
                         strcpy_s(nameFile, 1, "");
-                    }
-                    strcpy_s(nameFile, 5, bufferWord);
+                    else
+                        strcpy_s(nameFile, 5, bufferWord);
                 }
                 else {
                     printf("Ошибка чтения имени файла! Попробуйте ещё раз.\n");
