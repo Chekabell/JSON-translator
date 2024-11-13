@@ -22,9 +22,8 @@ int addNewTranslateWord(cJSON* dict, char* word, char* translate) {
     return 0;
 }
 
-char* toLower(char* word) {
+void toLower(char* word) {
     for (; *word; ++word) *word = tolower(*word);
-    return word;
 }
 
 int HasTranslateWord(cJSON* dict, char* word, char* translate) {
@@ -79,18 +78,21 @@ void printAllDict(cJSON* dict) {
 
 cJSON* readJSON(char* fileName) {
     strcat_s(fileName, 10, ".json");
+
     FILE* fp = fopen(fileName, "r");
     if (fp == NULL) {
         printf("Ошибка! Такого файла не существует.\n\n");
         return NULL;
     }
 
-    // read the file contents into a string 
-    char buffer[2048];
-    int len = fread(buffer, 1, sizeof(buffer), fp);
+    fseek(fp, 0, SEEK_END);
+    long fsize = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    char* buffer = malloc(fsize + 1);
+    fread(buffer, fsize, 1, fp);
     fclose(fp);
 
-    // parse the JSON data 
     cJSON* json = cJSON_Parse(buffer);
     if (json == NULL) {
         const char* error_ptr = cJSON_GetErrorPtr();
@@ -108,7 +110,7 @@ int saveJSON(cJSON* dict, char * fileName) {
     strcat_s(fileName, 10, ".json");
 
     char* json_str = cJSON_Print(dict);
-    // write the JSON string to a file 
+
     FILE* fp = fopen(fileName, "w");
     if (fp == NULL) {
         printf("Ошибка! Не получилось открыть файл.\n");
